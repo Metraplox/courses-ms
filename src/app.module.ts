@@ -1,11 +1,32 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { CourseModule } from './course/course.module';
+import { ConfigModule } from '@nestjs/config';
+import config from './config';
+
+import * as Joi from 'joi';
 
 @Module({
-  imports: [CourseModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [config],
+      envFilePath: [
+        process.env.NODE_ENV === 'production' ? '.env.prod' : '.env.dev',
+      ],
+      validationSchema: Joi.object({
+        AMQP_USER: Joi.string().required(),
+        AMQP_PASSWORD: Joi.string().required(),
+        AMQP_HOST: Joi.string().required(),
+        AMQP_PORT: Joi.number().required(),
+        MONGO_INITDB_ROOT_USERNAME: Joi.string().required(),
+        MONGO_INITDB_ROOT_PASSWORD: Joi.string().required(),
+        MONGO_HOST: Joi.string().required(),
+        MONGO_PORT: Joi.number().required(),
+        MONGO_DB: Joi.string().required(),
+        MONGO_CONNECTION: Joi.string().required(),
+      }),
+    }),
+    CourseModule,
+  ],
 })
 export class AppModule {}
