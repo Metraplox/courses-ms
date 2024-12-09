@@ -1,14 +1,13 @@
 import {
   ConflictException,
-  HttpStatus,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateCourseDto, UpdateCourseDto } from './dto/course.dto';
 import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { CreateCourseDto, UpdateCourseDto } from './dto/course.dto';
 import { Course } from './entities/course.entity';
-import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class CourseService {
@@ -27,10 +26,7 @@ export class CourseService {
       if (error.code === 11000) {
         throw new ConflictException('Course already exists');
       }
-      return {
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-        msg: error.message,
-      };
+      throw new InternalServerErrorException(error);
     }
   }
 
@@ -43,12 +39,6 @@ export class CourseService {
   }
 
   async findOne(id: string) {
-    if (!Types.ObjectId.isValid(id)) {
-      return {
-        status: HttpStatus.BAD_REQUEST,
-        msg: 'Invalid ID',
-      };
-    }
     try {
       const course = await this.courseModel.findById(id);
       if (!course) {
@@ -56,18 +46,34 @@ export class CourseService {
       }
       return course;
     } catch (error) {
-      return {
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-        msg: error.message,
-      };
+      throw new InternalServerErrorException(error);
     }
   }
 
-  update(id: number, updateCourseDto: UpdateCourseDto) {
-    return `This action updates a #${id} course`;
+  async update(id: number, updateCourseDto: UpdateCourseDto) {
+    const { courseName, description, price, category, imageUrl, classes } =
+      updateCourseDto;
+
+    try {
+      const course = await this.courseModel.findByIdAndUpdate(id, {
+        courseName,
+        description,
+        price,
+        category,
+        imageUrl,
+        classes,
+      });
+      return course;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} course`;
+  async remove(id: number) {
+    try {
+      return await this.courseModel.findByIdAndDelete(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }

@@ -8,7 +8,7 @@ export type CourseDocument = HydratedDocument<Course>;
   timestamps: true,
 })
 export class Course {
-  @Prop({ type: uuid, required: true })
+  @Prop({ type: uuid, default: uuid, required: false })
   _id: string;
 
   @Prop({ type: String, required: true })
