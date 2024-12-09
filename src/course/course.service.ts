@@ -77,4 +77,17 @@ export class CourseService {
       throw new InternalServerErrorException(error);
     }
   }
+
+  async findByCategory(category: string) {
+    try {
+      const courses = await this.courseModel.find({ category });
+      if (courses.length === 0) {
+        throw new NotFoundException(`No exist courses found for category ${category}`);
+      }
+      return courses;
+
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 }

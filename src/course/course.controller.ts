@@ -37,4 +37,9 @@ export class CourseController {
   remove(@Payload() id: string) {
     return this.courseService.remove(id);
   }
+
+  @MessagePattern(CoursesMSG.FIND_BY_CATEGORY)
+  findCoursesByCategory(@Payload() category: string) {
+    return this.courseService.findByCategory(category);
+  }
 }
