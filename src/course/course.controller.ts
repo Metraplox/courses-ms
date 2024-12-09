@@ -42,4 +42,9 @@ export class CourseController {
   findCoursesByCategory(@Payload() category: string) {
     return this.courseService.findByCategory(category);
   }
+
+  rateCourse(@Payload() payload: { id: string; rating: number }) {
+    const { id, rating } = payload;
+    return this.courseService.rateCourse(id, rating);
+  }
 }

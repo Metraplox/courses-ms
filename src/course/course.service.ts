@@ -90,4 +90,28 @@ export class CourseService {
       throw new InternalServerErrorException(error);
     }
   }
+
+  async rateCourse(id: string, rating: number) {
+    try {
+      const course = await this.courseModel.findById(id);
+      if (!course) {
+        throw new NotFoundException(`Course #${id} not found`);
+      }
+
+      const newRating = ((course.rating * course.ratingCount) + rating) / (course.ratingCount + 1);
+
+      const newRatingCount = course.ratingCount + 1;
+      const updatedCourse = await this.courseModel.findByIdAndUpdate(
+          id,
+          {
+            rating: Number(newRating.toFixed(1)),
+            ratingCount: newRatingCount,
+          },
+          { new: true },
+      );
+      return updatedCourse;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 }
