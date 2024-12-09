@@ -29,6 +29,10 @@ export class CreateCourseDto {
   @IsString()
   @IsNotEmpty()
   category: string;
+
+  @IsString()
+  @IsNotEmpty()
+  imageUrl: string;
 }
 
 export class UpdateCourseDto {

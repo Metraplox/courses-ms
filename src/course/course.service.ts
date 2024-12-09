@@ -13,13 +13,22 @@ import { Course } from './entities/course.entity';
 export class CourseService {
   constructor(@InjectModel(Course.name) private courseModel: Model<Course>) {}
 
-  async create({ courseName, description, price, teacherId }: CreateCourseDto) {
+  async create({
+    courseName,
+    description,
+    price,
+    teacherId,
+    imageUrl,
+    category,
+  }: CreateCourseDto) {
     try {
       const course = new this.courseModel({
         courseName,
         description,
         price,
         teacherId,
+        imageUrl,
+        category,
       });
       return await course.save();
     } catch (error) {

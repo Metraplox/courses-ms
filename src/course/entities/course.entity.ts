@@ -29,7 +29,7 @@ export class Course {
   @Prop({ type: String, required: true })
   imageUrl: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: [String], required: false, default: [] })
   classes: string[];
 }
 

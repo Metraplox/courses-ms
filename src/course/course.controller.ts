@@ -9,12 +9,14 @@ export class CourseController {
   constructor(private readonly courseService: CourseService) {}
 
   @MessagePattern(CoursesMSG.CREATE)
-  create(@Payload() createCourseDto: CreateCourseDto) {
-    return this.courseService.create(createCourseDto);
+  create(@Payload() createCourseInput: CreateCourseDto) {
+    console.log(createCourseInput);
+    return this.courseService.create(createCourseInput);
   }
 
   @MessagePattern(CoursesMSG.FIND_ALL)
   findAll() {
+    console.log('find all');
     return this.courseService.findAll();
   }
 
