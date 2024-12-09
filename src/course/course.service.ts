@@ -50,9 +50,9 @@ export class CourseService {
     }
   }
 
-  async update(id: number, updateCourseDto: UpdateCourseDto) {
+  async update(id: string, updateCourseInput: UpdateCourseDto) {
     const { courseName, description, price, category, imageUrl, classes } =
-      updateCourseDto;
+      updateCourseInput;
 
     try {
       const course = await this.courseModel.findByIdAndUpdate(id, {
@@ -69,7 +69,7 @@ export class CourseService {
     }
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     try {
       return await this.courseModel.findByIdAndDelete(id);
     } catch (error) {

@@ -24,12 +24,15 @@ export class CourseController {
   }
 
   @MessagePattern(CoursesMSG.UPDATE)
-  update(@Payload() id: string, @Body() updateCourseDto: UpdateCourseDto) {
-    return this.courseService.update(+id, updateCourseDto);
+  update(
+    @Payload() payload: { id: string; updateCourseInput: UpdateCourseDto },
+  ) {
+    const { id, updateCourseInput } = payload;
+    return this.courseService.update(id, updateCourseInput);
   }
 
   @MessagePattern(CoursesMSG.DELETE)
   remove(@Payload() id: string) {
-    return this.courseService.remove(+id);
+    return this.courseService.remove(id);
   }
 }
