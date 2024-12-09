@@ -60,17 +60,9 @@ export class CourseService {
   }
 
   async update(id: string, updateCourseInput: UpdateCourseDto) {
-    const { courseName, description, price, category, imageUrl, classes } =
-      updateCourseInput;
-
     try {
       const course = await this.courseModel.findByIdAndUpdate(id, {
-        courseName,
-        description,
-        price,
-        category,
-        imageUrl,
-        classes,
+        ...updateCourseInput,
       });
       return course;
     } catch (error) {
