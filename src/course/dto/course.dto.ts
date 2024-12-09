@@ -1,7 +1,7 @@
-import { PartialType } from '@nestjs/mapped-types';
 import {
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
   Min,
@@ -25,6 +25,36 @@ export class CreateCourseDto {
   @IsPositive()
   @Min(0)
   price: number;
+
+  @IsString()
+  @IsNotEmpty()
+  category: string;
 }
 
-export class UpdateCourseDto extends PartialType(CreateCourseDto) {}
+export class UpdateCourseDto {
+  @IsString()
+  @IsOptional()
+  courseName?: string;
+
+  @IsString()
+  @IsOptional()
+  description?: string;
+
+  @IsNumber()
+  @IsOptional()
+  @IsPositive()
+  @Min(0)
+  price?: number;
+
+  @IsString()
+  @IsOptional()
+  category?: string;
+
+  @IsString()
+  @IsOptional()
+  imageUrl?: string;
+
+  @IsString()
+  @IsOptional()
+  classes?: string[];
+}

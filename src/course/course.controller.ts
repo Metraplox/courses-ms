@@ -9,12 +9,13 @@ import {
 } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto, UpdateCourseDto } from './dto/course.dto';
+import { MessagePattern } from '@nestjs/microservices';
 
 @Controller('course')
 export class CourseController {
   constructor(private readonly courseService: CourseService) {}
 
-  @Post()
+  @MessagePattern()
   create(@Body() createCourseDto: CreateCourseDto) {
     return this.courseService.create(createCourseDto);
   }
